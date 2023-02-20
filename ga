@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+ARTIST=$1
+
+curl -X "GET" "https://api.spotify.com/v1/search?q=beyonce&type=artist" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer BQBPyygyXfXqzXZy0ULFdaj1azya2XVnKmFXPykO3MMw0JJ6knmKkc3Jx6nlC1FDHYltPRksJvz-iEBsBELZ7maevNlD-0fmAxuZ47ckmXzbGdwf6Ksk8g2ya5EatkraX4Ar6Vq6q7WujUBau5Zjwbo_bZiH2GUypagrrUG3jMd_bA" | jq .id
+
