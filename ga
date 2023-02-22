@@ -1,5 +1,4 @@
 #!/usr/bin/bash
 ARTIST=$1
 
-curl -X "GET" "https://api.spotify.com/v1/search?q=beyonce&type=artist" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer BQBPyygyXfXqzXZy0ULFdaj1azya2XVnKmFXPykO3MMw0JJ6knmKkc3Jx6nlC1FDHYltPRksJvz-iEBsBELZ7maevNlD-0fmAxuZ47ckmXzbGdwf6Ksk8g2ya5EatkraX4Ar6Vq6q7WujUBau5Zjwbo_bZiH2GUypagrrUG3jMd_bA" | jq .id
-
+curl -X "GET" "https://api.spotify.com/v1/search?q=$1&type=artist" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer BQAuTaWKvo_vQOlWZql5-dkTcwiQrHsbRmRD_WgKWJn-BTWBL1-AfjohX-iL_yk1-B2bMFMLg-9cNACcAIrZaD-9Wpxo_XBioZRhQnPq6P7N-g3Ilnm0zhSQiGO0gtl0uqi7kflhG9RJ2L9utXqQL8JXvi4IVF8KPJepHwrUP02fSw" | jq '.artists | .items[] | .id'
