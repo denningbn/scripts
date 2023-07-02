@@ -1,0 +1,42 @@
+#!/bin/bash
+#This is a script to take a folder full of image files and convert them all into a single pdf.
+
+folder="$1"
+good_folder=1
+pdf_name="output"
+
+
+#check if number of arguments is not equal to 1
+if [ $# -lt 1 ]; then
+	echo "Please provide one argument."
+	exit 1
+fi
+
+if [ "$2" = "-n" ]; then
+	pdf_name="$3"
+fi
+
+if [ ! -d "$folder" ]; then
+	echo "Please provide one directory as an argument."
+	exit 1
+fi
+
+#go through the given folder, check if any files are not png or jpg
+for file in "$folder"/*
+do 
+	extension="${file##*.}"
+	extension_lower="${extension,,}"
+	if [[ $extension_lower != "png" && $extension_lower != "jpg" ]]; then 
+		good_folder=0	
+	fi
+done
+
+if [ $good_folder -ne 1 ]; then
+	echo "Please provide a file with only jpg or png files."
+	exit 1
+else
+	convert "$folder"/* "$folder"/"$pdf_name".pdf
+	echo "Output stored in folder."
+fi
+
+exit 1
