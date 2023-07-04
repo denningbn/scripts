@@ -3,7 +3,11 @@
 
 folder="$1"
 good_folder=1
-pdf_name="output"
+output="output"
+
+#get name of document from user
+echo "Enter name of document: " 
+read pdf_name
 
 
 #check if number of arguments is not equal to 1
@@ -12,19 +16,37 @@ if [ $# -lt 1 ]; then
 	exit 1
 fi
 
-if [ "$2" = "-n" ]; then
-	pdf_name="$3"
-fi
-
 if [ ! -d "$folder" ]; then
 	echo "Please provide one directory as an argument."
 	exit 1
 fi
 
+#TODO
+#create output file named after given series
+#for loop to go through all folders in given file
+#	within for loop go through loop to check that all files end in jpg or png
+#	if so, convert and store in file named v0X, where X is the volume number
+
+if [ -d "$folder/$output" ]; then
+	echo "Output directory already present, delete directory and continue? [y/n]"
+	read $remove
+
+	if [ $remove = "y" ]; then
+		rm -r $folder/$output
+	else
+		echo "Ending Process"
+		exit 1
+else
+	mkdir "$folder/$output"
+fi
+
+
+
+
 #go through the given folder, check if any files are not png or jpg
-for file in "$folder"/*
+for file2 in "$folder"/*
 do 
-	extension="${file##*.}"
+	extension="${file2##*.}"
 	extension_lower="${extension,,}"
 	if [[ $extension_lower != "png" && $extension_lower != "jpg" ]]; then 
 		good_folder=0	
@@ -35,7 +57,7 @@ if [ $good_folder -ne 1 ]; then
 	echo "Please provide a file with only jpg or png files."
 	exit 1
 else
-	convert "$folder"/* "$folder"/"$pdf_name".pdf
+	convert "$folder"/"file2"* "$folder"/"$pdf_name".pdf
 	echo "Output stored in folder."
 fi
 
