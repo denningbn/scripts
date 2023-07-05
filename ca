@@ -22,43 +22,46 @@ if [ ! -d "$folder" ]; then
 fi
 
 #TODO
-#create output file named after given series
-#for loop to go through all folders in given file
+#DONE create output file named after given series 
+#DONE for loop to go through all folders in given file
 #	within for loop go through loop to check that all files end in jpg or png
 #	if so, convert and store in file named v0X, where X is the volume number
 
 if [ -d "$folder/$output" ]; then
-	echo "Output directory already present, delete directory and continue? [y/n]"
-	read $remove
+	echo "Output directory already present, delete directory and continue? [y/n]remove?"
 
 	if [ $remove = "y" ]; then
 		rm -r $folder/$output
 	else
 		echo "Ending Process"
 		exit 1
+	fi
 else
 	mkdir "$folder/$output"
 fi
 
+num_vols=0
+for volume in "$folder"/*/
+do
+	good_folder=1
 
+	let "num_vols++"
+	for file in "$volume"*
+	do 
+		extension="${file##*.}"
+		extension_lower="${extension,,}"
+		if [[ $extension_lower != "png" && $extension_lower != "jpg" ]]; then
+			good_folder=0
+		fi
+	done
 
-
-#go through the given folder, check if any files are not png or jpg
-for file2 in "$folder"/*
-do 
-	extension="${file2##*.}"
-	extension_lower="${extension,,}"
-	if [[ $extension_lower != "png" && $extension_lower != "jpg" ]]; then 
-		good_folder=0	
+	if [ $good_folder -ne 1 ]; then
+		echo "File $num_vols contains unusable filetypes, please provide files with only jpg or png files."
+	else
+		convert "$volume"/* "$folder"/"$output"/vol"$num_vols".pdf
+		echo "Volume $num_vols added to $output."
 	fi
+
 done
 
-if [ $good_folder -ne 1 ]; then
-	echo "Please provide a file with only jpg or png files."
-	exit 1
-else
-	convert "$folder"/"file2"* "$folder"/"$pdf_name".pdf
-	echo "Output stored in folder."
-fi
-
-exit 1
+exit 0
